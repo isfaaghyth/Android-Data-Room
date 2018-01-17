@@ -39,25 +39,38 @@ public class Portfolio {
         return title;
     }
 
-    public Portfolio setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
     public String getDesc() {
         return desc;
-    }
-
-    public Portfolio setDesc(String desc) {
-        this.desc = desc;
-        return this;
     }
 
     public String getImg() {
         return img;
     }
 
-    public Portfolio setImg(String img) {
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
+
+    //setter for builder
+    public Portfolio title(String title) {
+        this.title = title;
+        return this;
+    }
+
+    public Portfolio desc(String desc) {
+        this.desc = desc;
+        return this;
+    }
+
+    public Portfolio img(String img) {
         this.img = img;
         return this;
     }

@@ -6,6 +6,8 @@ import android.arch.persistence.room.Query;
 
 import java.util.List;
 
+import io.reactivex.Flowable;
+
 /**
  * Created by isfaaghyth on 1/17/18.
  * github: @isfaaghyth
@@ -14,7 +16,7 @@ import java.util.List;
 @Dao
 public interface PortfolioDao {
     @Query("SELECT * FROM portfolio")
-    List<Portfolio> getAll();
+    Flowable<List<Portfolio>> getAll();
 
     @Insert
     void insert(Portfolio... portfolio);

@@ -5,6 +5,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import java.util.List;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 import isfaaghyth.app.room.R;
 import isfaaghyth.app.room.data.AppDatabase;
 import isfaaghyth.app.room.model.Portfolio;
@@ -12,6 +20,7 @@ import isfaaghyth.app.room.model.PortfolioUtils;
 
 public class MainActivity extends AppCompatActivity {
 
+    private Disposable disposable = new CompositeDisposable();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,10 +40,22 @@ public class MainActivity extends AppCompatActivity {
         });
         findViewById(R.id.btnLihatData).setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View view) {
-                for (Portfolio portfolio: PortfolioUtils.getAll(db)) {
-                    Log.d(portfolio.getId()+"", portfolio.getTitle());
-                }
+                disposable = PortfolioUtils.getAll(db)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeOn(Schedulers.io())
+                        .subscribe(new Consumer<List<Portfolio>>() {
+                            @Override public void accept(@NonNull List<Portfolio> portfolios) throws Exception {
+                                for (Portfolio portfolio: portfolios) {
+                                    Log.d(String.valueOf(portfolio.getId()), portfolio.getTitle());
+                                }
+                            }
+                        });
             }
         });
+    }
+
+    @Override protected void onDestroy() {
+        super.onDestroy();
+        disposable.dispose();
     }
 }

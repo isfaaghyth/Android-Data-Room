@@ -2,6 +2,7 @@ package isfaaghyth.app.room.model;
 
 import java.util.List;
 
+import io.reactivex.Flowable;
 import isfaaghyth.app.room.data.AppDatabase;
 
 /**
@@ -16,7 +17,7 @@ public class PortfolioUtils {
         return portfolio;
     }
 
-    public static List<Portfolio> getAll(AppDatabase db) {
+    public static Flowable<List<Portfolio>> getAll(AppDatabase db) {
         return db.portfolioDao().getAll();
     }
 

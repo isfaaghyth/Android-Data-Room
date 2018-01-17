@@ -22,11 +22,10 @@ public class MainActivity extends AppCompatActivity {
 
         findViewById(R.id.btnTambah).setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
-                Portfolio item = new Portfolio.Builder()
-                                    .title("Hai!")
-                                    .desc("ini deskripsi")
-                                    .img("gambar!")
-                                    .build();
+                Portfolio item = new Portfolio()
+                                    .setTitle("Hai!")
+                                    .setDesc("ini deskripsi")
+                                    .setImg("gambar!");
                 PortfolioUtils.addPortfolio(db, item);
             }
         });

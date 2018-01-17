@@ -20,7 +20,7 @@ import isfaaghyth.app.room.model.PortfolioUtils;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Disposable disposable = new CompositeDisposable();
+    private CompositeDisposable disposable = new CompositeDisposable();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         });
         findViewById(R.id.btnLihatData).setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View view) {
-                disposable = PortfolioUtils.getAll(db)
+                disposable.add(PortfolioUtils.getAll(db)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeOn(Schedulers.io())
                         .subscribe(new Consumer<List<Portfolio>>() {
@@ -49,13 +49,13 @@ public class MainActivity extends AppCompatActivity {
                                     Log.d(String.valueOf(portfolio.getId()), portfolio.getTitle());
                                 }
                             }
-                        });
+                        }));
             }
         });
     }
 
     @Override protected void onDestroy() {
         super.onDestroy();
-        disposable.dispose();
+        disposable.clear();
     }
 }
